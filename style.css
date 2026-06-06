@@ -1,0 +1,48 @@
+body {
+    background-color: midnightblue;
+    background-image: linear-gradient(to bottom, rgb(164, 20, 236), rgb(55, 162, 220));
+    background-repeat: no-repeat;
+    background-position: top center;
+    font-family: 'Times New Roman', Times, serif;
+}
+
+.page-header {
+    background-image: linear-gradient(to right, navy, rgb(85, 221, 255));
+    border-radius: 16px;
+    text-align: center;
+    color: white;
+}
+
+.fact-card {
+    background-color: midnightblue;
+    border-radius: 12px;
+    color: white;
+}
+
+.fact-card h2 {
+    color: rgb(43, 24, 61);
+}
+
+.star {
+    width: 60px;
+    height: 60px;
+    background-color: darkgoldenrod;
+    border-radius: 50%;
+    animation: twinkle 2s infinite alternate;
+}
+
+@keyframes twinkle {
+    from {
+        background-color: darkgoldenrod;
+    }
+
+    to {
+        background-color: white;
+    }
+
+}
+
+.footer-text {
+    text-align: center;
+    color: aquamarine
+}

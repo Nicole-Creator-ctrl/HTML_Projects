@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <style>
+        body {
+            font-family: Arial;
+            background-color:rgb(137, 150, 111);
+            padding: 30px;
+            text-align: center;
+        }
+        h1 {
+            color:rgb(46, 60, 23)
+        }
+        h1+p {
+            background-color: rgb(85, 97, 62);
+            padding: 10px 20px;
+            color:rgb(15, 22, 2);
+            font-weight: bold;
+            display:inline-block;
+        }
+        ul {
+            padding: 0;
+            margin-top: 20px;
+        }
+        ul>li {
+            list-style: none;
+            font-size: 18px;
+            font-weight: bold;
+            color:rgb(51, 68, 14);
+            padding: 10px 20px;
+            margin: 6px auto;
+            width: 260px;
+            background-color: rgb(189, 206, 146);
+            border-radius: 8px;
+        }
+        ul li:nth-child(3) {
+            background: rgb(223, 234, 201);
+            color:rgb(46, 60, 23)
+        }
+        .desc {
+            color:rgb(38, 44, 28);
+            margin-top: 20px;
+            font-size: 15px;
+            max-width: 400px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        .desc::first-letter {
+            font-size: 220%;
+            color:rgb(38, 44, 28);
+            font-weight: bold;
+            font-family:cursive;
+        }
+        .links {
+            margin-top: 25px;
+        }
+        a {
+            color:rgb(22, 27, 6);
+            text-decoration: none;
+            font-size: 15px;
+            margin: 0 12px;
+            padding: 8px 18 px;
+            border: 2px solid rgb(189, 206, 146);
+            border-radius: 8 px;
+
+        }
+        a:hover {
+            background:rgb(133, 196, 153) ;
+            color:aliceblue
+        }
+    </style>
+</head>
+
+<body>
+  <h1>My Food Menu</h1>
+  <p>Pick your Favorite Dish and Dig In</p>
+
+  <ul>
+    <li>Pizza</li>
+    <li>Burgers</li>
+    <li>Tacos</li>
+    <li>Noodles</li>
+    <li>Chicharron</li>
+    <li>Ice Cream</li>
+  </ul>
+
+  <p class="desc">Every dish on this menu is made with love and loads of flavour.Try them all and find your favorite!</p>
+
+  <div class="links">
+    <a href="#">Order Now</a>
+    <a href="#">See More</a>
+  </div>
+</body>
+
+</html>

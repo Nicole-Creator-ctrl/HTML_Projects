@@ -7,8 +7,23 @@
 
         rel="sytlesheet">
         <style>
-       
-       
+         
+       body {
+        background-color: rgb(190, 238, 255);
+       }
+       h1 {
+        color:rgb(30, 150, 255);
+        text-decoration: underline;
+       }
+       h6, h5 {
+        text-decoration: underline;
+       }
+       .card-label {
+        font-size: 11px; color:rgb(17, 131, 230);
+       }
+      pre {
+        font-size: 13px; color: black;
+      }
         </style>
     </head>
     <body class="py-4">
@@ -37,6 +52,14 @@
                             <span class="card-label d-block">City</span>
                             <strong id="city">-</strong>
                         </li>
+                        <li class="list-group-item">
+                            <span class="card-label d-block">Mother's Name</span>
+                            <strong id="MotherName">-</strong>
+                        </li>
+                        <li class="list-group-item">
+                            <span class="card-label d-block">Father's Name</span>
+                            <strong id="FatherName">-</strong>
+                        </li>
                     </ul>
                 </div>
             </div>
@@ -52,10 +75,36 @@
  </div>
  <script>
      var myContact = {
-        name: "Riya Sharma",
-        phone: "+591 69468878",
+        name: "Emma Nicole Diaz",
+        phone: "+591 123 456789",
+        school: "Calvert Cochabamba Cooperative School",
+        city: "Cochabamba",
+        MotherName : "Ana Emilia Rivera",
+        FatherName : "Daniel Diaz",
+     };
+     var nameE1 = document.getElementById("name");
+     var phoneE1 = document.getElementById("phone");
+     nameE1.textContent = myContact.name;
+     phoneE1.textContent = myContact.phone;
+     var motherNameE1 = document.getElementById("MotherName");
+     var fatherNameE1 = document.getElementById("FatherName");
+     var schoolE1 = document.getElementById("school");
+     var cityE1 = document.getElementById("city");
+    motherNameE1.textContent = myContact["MotherName"];
+    fatherNameE1.textContent = myContact["FatherName"];
+    schoolE1.textContent = myContact["school"];
+    cityE1.textContent = myContact["city"];
 
-     }
+    var CodeE1 = document.getElementById("CodeDisplay");
+    CodeE1.textContent =
+    'var myContact = {\n' +
+        '    name: "' + myContact.name + '",\n' +
+        '    phone: "' + myContact.phone + '",\n' +
+        '    school: "' + myContact["school"] + '",\n' +
+        '    city: "' + myContact["city"] + '",\n' +
+        '    MotherName: "' + myContact["MotherName"] + '",\n' +
+        '    FatherName: "' + myContact["FatherName"] + '"\n' +
+        '};';
  </script>
 
     </body>

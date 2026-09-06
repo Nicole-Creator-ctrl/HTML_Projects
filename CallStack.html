@@ -5,6 +5,8 @@
     <h2>JavaScript Functions</h2>
     <p>Do a calculation and then display the result.</p>
     <p id="demo"></p>
+    <p id="demo1"></p>
+    <p id="demo2"></p>
     <script>
         function add(a, b) {
             return a + b;
@@ -12,8 +14,20 @@
         function average(a, b) {
             return add(a, b) /2;
         }
+        function divide(a, b) {
+            return a / b;
+        }
+        function multiply(a, b) {
+            return a * b;
+        }
         let result = average(10, 20);
+        let result2 = divide(54, 9);
+        let result3 = multiply(3, 4);
+       
         document.getElementById("demo").innerHTML = result;
+        document.getElementById("demo1").innerHTML = result2;
+        document.getElementById("demo2").innerHTML = result3;
+
     </script>
 </body>
 </html>

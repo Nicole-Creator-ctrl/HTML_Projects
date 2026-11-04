@@ -1,0 +1,1072 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Desafío de Tildes</title>
+
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@500;600;700;800;900&display=swap');
+
+        :root {
+            --navy: #173d55;
+            --blue: #187eb0;
+            --aqua: #7bd9e7;
+            --light: #eafaff;
+            --green: #72c95b;
+            --dark-green: #347b46;
+            --text: #204d66;
+            --metal: #9ebac4;
+            --white: #fff;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            min-height: 100vh;
+            margin: 0;
+            padding: 30px 16px;
+            display: grid;
+            place-items: center;
+            font-family: 'Nunito', sans-serif;
+            color: var(--text);
+            background:
+                radial-gradient(ellipse at 50% 0%, #ffffff 0%, transparent 50%),
+                linear-gradient(155deg, #69cbe8, #c2f0f0 50%, #75cf9b);
+        }
+
+        .machine {
+            position: relative;
+            width: min(610px, 100%);
+            padding: 26px;
+            border-radius: 28px;
+            border: 2px solid #f8ffff;
+            background: linear-gradient(145deg, #e6f8fc 0%, #b8dce8 24%, #eefbff 48%, #a4cedd 100%);
+            box-shadow: 0 4px 0 #85afc0, 0 9px 0 #4f899f,
+                0 18px 35px #124c6850, inset 0 2px 4px white,
+                inset 0 -5px 12px #4d94b433;
+        }
+
+        .screw {
+            position: absolute;
+            width: 13px;
+            height: 13px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #fff, #789aa8 70%);
+            border: 1px solid #7399a9;
+            box-shadow: inset 0 1px 2px white, 0 1px 1px #638695;
+        }
+
+        .screw::after,
+        .screw::before {
+            content: "";
+            position: absolute;
+            left: 2px;
+            top: 5px;
+            width: 7px;
+            height: 1px;
+            background: #557583;
+        }
+
+        .screw::before {
+            transform: rotate(45deg);
+        }
+
+        .screw.tl {
+            top: 12px;
+            left: 12px;
+        }
+
+        .screw.tr {
+            top: 12px;
+            right: 12px;
+        }
+
+        .screw.bl {
+            bottom: 12px;
+            left: 12px;
+        }
+
+        .screw.br {
+            bottom: 12px;
+            right: 12px;
+        }
+
+        header {
+            text-align: center;
+            padding: 8px 0 22px;
+        }
+
+        .brand {
+            color: #36758d;
+            font-size: .7rem;
+            font-weight: 900;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+        }
+
+        h1 {
+            margin: 7px 0 4px;
+            color: #145b84;
+            font-size: clamp(1.7rem, 6vw, 2.65rem);
+            line-height: 1.15;
+            font-weight: 900;
+            letter-spacing: -.8px;
+            text-shadow: 0 2px white;
+        }
+
+        .subtitle {
+            margin: 8px 0 0;
+            font-size: .9rem;
+            font-weight: 700;
+            color: #537f91;
+        }
+
+        .display {
+            padding: 19px;
+            border-radius: 19px;
+            border: 3px solid #7ca8b7;
+            background: linear-gradient(160deg, #e1fbff, #b8e6f0);
+            box-shadow: inset 0 4px 9px #376f8350,
+                inset 0 1px 2px white, 0 2px 0 white;
+        }
+
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 8px;
+        }
+
+        .stat {
+            padding: 10px 4px;
+            text-align: center;
+            border-radius: 10px;
+            border: 1px solid #ffffff;
+            background: linear-gradient(180deg, #f8ffff, #d2f0f6);
+            box-shadow: 0 2px 0 #8bbdce, inset 0 1px 2px white;
+        }
+
+        .stat-label {
+            display: block;
+            font-size: .68rem;
+            font-weight: 900;
+            color: #5b8797;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        .stat-value {
+            display: block;
+            font-size: 1.35rem;
+            font-weight: 900;
+            color: #12699a;
+            font-variant-numeric: tabular-nums;
+        }
+
+        #combo {
+            color: #459747;
+        }
+
+        .progress-shell {
+            height: 13px;
+            margin: 16px 0 21px;
+            padding: 2px;
+            border: 1px solid #83adbb;
+            border-radius: 20px;
+            background: #7298a8;
+            box-shadow: inset 0 2px 3px #244d5c66;
+            overflow: hidden;
+        }
+
+        #bar {
+            height: 100%;
+            width: 100%;
+            border-radius: 20px;
+            background: linear-gradient(90deg, #73c954, #b8e96e);
+            transition: width .2s linear;
+        }
+
+        .category {
+            display: inline-block;
+            padding: 5px 15px;
+            border: 1px solid white;
+            border-radius: 6px;
+            background: linear-gradient(#ffffff, #d6f1f8);
+            box-shadow: 0 2px 0 #a2c9d5;
+            font-size: .73rem;
+            font-weight: 900;
+            letter-spacing: 1.5px;
+            color: #236c8c;
+        }
+
+        #question {
+            margin: 16px 0 10px;
+            font-size: 1.08rem;
+            font-weight: 800;
+        }
+
+        .word-display {
+            min-height: 90px;
+            display: grid;
+            place-items: center;
+            margin: 12px 0 18px;
+            padding: 14px;
+            border: 2px solid white;
+            border-radius: 15px;
+            background: linear-gradient(160deg, #faffff, #c8eff6);
+            box-shadow: inset 0 3px 8px #6499a950,
+                inset 0 1px 2px white, 0 3px 0 #8dbbcb;
+        }
+
+        #word {
+            margin: 0;
+            font-size: clamp(1.8rem, 8vw, 2.8rem);
+            font-weight: 900;
+            color: #126c9c;
+            overflow-wrap: anywhere;
+            text-shadow: 0 2px white;
+        }
+
+        .answers {
+            display: grid;
+            gap: 10px;
+        }
+
+        button {
+            position: relative;
+            width: 100%;
+            padding: 13px 12px;
+            border: 1px solid #ffffff;
+            border-radius: 12px;
+            background: linear-gradient(180deg, #49cce5, #159acb 60%, #0877af);
+            box-shadow: 0 4px 0 #08638e, 0 6px 9px #286b8530,
+                inset 0 2px 3px #ffffffc9;
+            color: white;
+            font: 900 1rem 'Nunito', sans-serif;
+            cursor: pointer;
+            transition: transform .12s, filter .12s, box-shadow .12s;
+        }
+
+        button::before {
+            content: "";
+            position: absolute;
+            top: 3px;
+            left: 9%;
+            width: 82%;
+            height: 30%;
+            border-radius: 12px;
+            background: linear-gradient(#ffffff70, #ffffff05);
+            pointer-events: none;
+        }
+
+        button:hover:not(:disabled) {
+            filter: brightness(1.07);
+        }
+
+        button:active:not(:disabled) {
+            transform: translateY(3px);
+            box-shadow: 0 1px 0 #08638e, inset 0 2px 4px #075b9660;
+        }
+
+        button:focus-visible {
+            outline: 3px solid #176c9a;
+            outline-offset: 4px;
+        }
+
+        button:disabled {
+            cursor: default;
+            filter: saturate(.7);
+        }
+
+        button.correct {
+            background: linear-gradient(#a9e984, #6dc75b 65%, #49a948);
+            box-shadow: 0 4px 0 #378a39, inset 0 2px 3px white;
+        }
+
+        button.wrong {
+            background: linear-gradient(#ffb5a6, #ee7868 65%, #d4544d);
+            box-shadow: 0 4px 0 #a43f3b, inset 0 2px 3px white;
+        }
+
+        #feedback {
+            min-height: 55px;
+            margin: 15px 0 0;
+            color: #386d80;
+            font-size: .91rem;
+            line-height: 1.5;
+            font-weight: 800;
+        }
+
+        .dice-panel {
+            display: grid;
+            grid-template-columns: 95px 1fr;
+            align-items: center;
+            gap: 17px;
+            margin: 19px 0;
+            padding: 15px;
+            border: 1px solid white;
+            border-radius: 17px;
+            background: linear-gradient(145deg, #d5f2f7, #a9d6e5);
+            box-shadow: inset 0 3px 7px #52889d50, 0 2px 0 white;
+        }
+
+        .die-holder {
+            display: grid;
+            place-items: center;
+            perspective: 500px;
+            min-height: 85px;
+        }
+
+        .die {
+            width: 73px;
+            height: 73px;
+            padding: 10px;
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            grid-template-rows: repeat(3, 1fr);
+            gap: 3px;
+            border: 1px solid #d2e4e8;
+            border-radius: 15px;
+            background: linear-gradient(145deg, #ffffff, #e2edf0 70%, #bacfd7);
+            box-shadow: 0 5px 0 #91aeb9, 0 8px 10px #426d7a50,
+                inset 0 2px 3px white, inset 0 -2px 4px #799eab70;
+            transform: rotate(-5deg);
+        }
+
+        .die.rolling {
+            animation: tumble .65s ease-out;
+        }
+
+        @keyframes tumble {
+            0% {
+                transform: rotate(-5deg) scale(1);
+            }
+
+            25% {
+                transform: rotate(90deg) scale(.85);
+            }
+
+            50% {
+                transform: rotate(195deg) scale(1.08);
+            }
+
+            75% {
+                transform: rotate(280deg) scale(.94);
+            }
+
+            100% {
+                transform: rotate(355deg) scale(1);
+            }
+        }
+
+        .pip {
+            width: 11px;
+            height: 11px;
+            align-self: center;
+            justify-self: center;
+            border-radius: 50%;
+            opacity: 0;
+            background: radial-gradient(circle at 30% 25%, #4d6573, #132f3e 75%);
+            box-shadow: inset 0 1px 2px #081e2b;
+        }
+
+        .face-1 .pip:nth-child(5),
+        .face-2 .pip:nth-child(1),
+        .face-2 .pip:nth-child(9),
+        .face-3 .pip:nth-child(1),
+        .face-3 .pip:nth-child(5),
+        .face-3 .pip:nth-child(9),
+        .face-4 .pip:nth-child(1),
+        .face-4 .pip:nth-child(3),
+        .face-4 .pip:nth-child(7),
+        .face-4 .pip:nth-child(9),
+        .face-5 .pip:nth-child(1),
+        .face-5 .pip:nth-child(3),
+        .face-5 .pip:nth-child(5),
+        .face-5 .pip:nth-child(7),
+        .face-5 .pip:nth-child(9),
+        .face-6 .pip:nth-child(1),
+        .face-6 .pip:nth-child(3),
+        .face-6 .pip:nth-child(4),
+        .face-6 .pip:nth-child(6),
+        .face-6 .pip:nth-child(7),
+        .face-6 .pip:nth-child(9) {
+            opacity: 1;
+        }
+
+        .dice-copy {
+            text-align: left;
+        }
+
+        .dice-title {
+            margin: 0 0 4px;
+            font-size: .86rem;
+            font-weight: 900;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            color: #236b86;
+        }
+
+        #diceMessage {
+            min-height: 39px;
+            margin: 0 0 9px;
+            font-size: .8rem;
+            line-height: 1.45;
+            color: #47788a;
+            font-weight: 700;
+        }
+
+        #rollButton {
+            padding: 10px 12px;
+            font-size: .82rem;
+            border-radius: 9px;
+            background: linear-gradient(180deg, #b8ef83, #74ce55 60%, #49a542);
+            color: #225c35;
+            text-shadow: 0 1px white;
+            box-shadow: 0 3px 0 #37883c, inset 0 2px 3px white;
+        }
+
+        #rollButton:disabled {
+            opacity: .65;
+        }
+
+        .main-button {
+            margin-top: 13px;
+            padding: 15px;
+            border-radius: 14px;
+            background: linear-gradient(180deg, #b8ef83, #74ce55 60%, #49a542);
+            color: #225c35;
+            text-shadow: 0 1px white;
+            box-shadow: 0 5px 0 #37883c, inset 0 2px 3px white;
+            letter-spacing: .5px;
+        }
+
+        #endScreen {
+            padding: 22px 0 5px;
+            text-align: center;
+        }
+
+        #endTitle {
+            margin: 0 0 15px;
+            color: #126c9c;
+            font-size: clamp(1.8rem, 7vw, 2.5rem);
+            font-weight: 900;
+        }
+
+        #finalScore {
+            font-size: 1.45rem;
+            font-weight: 900;
+            color: #126c9c;
+        }
+
+        #rank {
+            padding: 14px;
+            border-radius: 12px;
+            border: 1px solid white;
+            background: linear-gradient(#ffffff, #d6f1f8);
+            box-shadow: 0 3px 0 #8bbdce;
+            color: #367f4a;
+            font-weight: 900;
+        }
+
+        .small {
+            color: #537f91;
+            font-size: .88rem;
+            font-weight: 700;
+        }
+
+        .footer {
+            margin-top: 20px;
+            text-align: center;
+            color: #4b8093;
+            font-size: .68rem;
+            font-weight: 900;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+
+        .hidden {
+            display: none !important;
+        }
+
+        @media (max-width: 430px) {
+            .machine {
+                padding: 19px;
+                border-radius: 23px;
+            }
+
+            .display {
+                padding: 13px;
+            }
+
+            .dice-panel {
+                grid-template-columns: 78px 1fr;
+                gap: 10px;
+                padding: 10px;
+            }
+
+            .die {
+                width: 65px;
+                height: 65px;
+                padding: 8px;
+            }
+
+            .pip {
+                width: 9px;
+                height: 9px;
+            }
+
+            .stat {
+                padding: 9px 2px;
+            }
+
+            .stat-label {
+                font-size: .6rem;
+            }
+
+            .stat-value {
+                font-size: 1.15rem;
+            }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+
+            *,
+            *::before,
+            *::after {
+                animation-duration: .01ms !important;
+                transition-duration: .01ms !important;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <main class="machine">
+        <span class="screw tl"></span>
+        <span class="screw tr"></span>
+        <span class="screw bl"></span>
+        <span class="screw br"></span>
+
+        <header>
+            <div class="brand">Sistema de entrenamiento lingüístico</div>
+            <h1>Desafío de Tildes</h1>
+            <p class="subtitle">Precisión, conocimiento y rapidez</p>
+        </header>
+
+        <section id="gameScreen">
+            <div class="display">
+                <div class="stats">
+                    <div class="stat">
+                        <span class="stat-label">Puntos</span>
+                        <span class="stat-value" id="score">0</span>
+                    </div>
+                    <div class="stat">
+                        <span class="stat-label">Combo</span>
+                        <span class="stat-value" id="combo">0</span>
+                    </div>
+                    <div class="stat">
+                        <span class="stat-label">Tiempo</span>
+                        <span class="stat-value"><span id="timer">45</span>s</span>
+                    </div>
+                </div>
+
+                <div class="progress-shell">
+                    <div id="bar"></div>
+                </div>
+
+                <div class="category" id="tag">SISTEMA PREPARADO</div>
+                <p id="question">¿Estás preparado para comenzar?</p>
+
+                <div class="word-display">
+                    <p id="word">TILDE</p>
+                </div>
+
+                <div class="answers" id="answers"></div>
+                <p id="feedback" aria-live="polite">
+                    Lanza el dado para activar tu primera pregunta.
+                </p>
+            </div>
+
+            <section class="dice-panel">
+                <div class="die-holder">
+                    <div id="die" class="die face-1" aria-label="Dado: 1">
+                        <span class="pip"></span><span class="pip"></span><span class="pip"></span>
+                        <span class="pip"></span><span class="pip"></span><span class="pip"></span>
+                        <span class="pip"></span><span class="pip"></span><span class="pip"></span>
+                    </div>
+                </div>
+
+                <div class="dice-copy">
+                    <p class="dice-title">Dado de bonificación</p>
+                    <p id="diceMessage" aria-live="polite">
+                        Lanza el dado para desbloquear las respuestas. Cuanto mayor sea el resultado, mayor será tu
+                        bonificación.
+                    </p>
+                    <button id="rollButton" onclick="rollDie()" disabled>
+                        LANZAR DADO
+                    </button>
+                </div>
+            </section>
+
+            <button class="main-button" id="startButton" onclick="startGame()">
+                INICIAR DESAFÍO
+            </button>
+        </section>
+
+        <section id="endScreen" class="hidden">
+            <h2 id="endTitle">DESAFÍO TERMINADO</h2>
+            <p id="finalScore"></p>
+            <p id="rank"></p>
+            <p class="small">La práctica convierte el conocimiento en precisión.</p>
+            <button class="main-button" onclick="startGame()">VOLVER A JUGAR</button>
+        </section>
+
+        <footer class="footer">
+            Laboratorio de lengua española · Edición interactiva
+        </footer>
+    </main>
+
+    <script>
+        const questions = [
+            {
+                tag: "¿QUÉ ES LA TILDE?",
+                q: "¿Para qué sirve la tilde en una palabra?",
+                word: "TILDE",
+                options: [
+                    "Para señalar la sílaba tónica cuando corresponde",
+                    "Para separar las sílabas",
+                    "Para indicar que una palabra es plural"
+                ],
+                answer: "Para señalar la sílaba tónica cuando corresponde",
+                info: "La tilde es el signo gráfico (´) que se escribe sobre una vocal según las reglas de acentuación."
+            },
+            {
+                tag: "REGLAS DE ACENTUACIÓN",
+                q: "¿Cuál de estas palabras está escrita correctamente?",
+                word: "CANCIÓN",
+                options: ["cancion", "canción", "cancíon"],
+                answer: "canción",
+                info: "Canción lleva tilde en la ó."
+            },
+            {
+                tag: "USO DE LA TILDE",
+                q: "¿Qué signo es la tilde?",
+                word: "´",
+                options: [
+                    "Una coma",
+                    "Un acento gráfico",
+                    "Un signo de interrogación"
+                ],
+                answer: "Un acento gráfico",
+                info: "La tilde es el signo gráfico que se coloca sobre una vocal: á, é, í, ó, ú."
+            },
+            {
+                tag: "CAZATILDES",
+                q: "Elige la forma correcta.",
+                word: "ÁRBOL",
+                options: ["arbol", "árbol", "arból"],
+                answer: "árbol",
+                info: "Árbol lleva tilde en la á."
+            },
+            {
+                tag: "TILDE DIACRÍTICA",
+                q: "¿En cuál oración «tú» lleva tilde correctamente?",
+                word: "TÚ / TU",
+                options: [
+                    "Tu eres amable.",
+                    "Tú eres amable.",
+                    "Tú cuaderno es azul."
+                ],
+                answer: "Tú eres amable.",
+                info: "Tú lleva tilde cuando es pronombre personal. Tu, sin tilde, indica posesión."
+            },
+            {
+                tag: "TILDE DIACRÍTICA",
+                q: "¿Cuál oración usa «él» correctamente?",
+                word: "ÉL / EL",
+                options: [
+                    "El llegó temprano.",
+                    "Él llegó temprano.",
+                    "Él libro es nuevo."
+                ],
+                answer: "Él llegó temprano.",
+                info: "Él lleva tilde cuando es pronombre personal. El, sin tilde, es un artículo."
+            },
+            {
+                tag: "INTERROGATIVOS",
+                q: "¿Cuál pregunta está escrita correctamente?",
+                word: "QUÉ",
+                options: [
+                    "Que hora es?",
+                    "¿Qué hora es?",
+                    "¿Que hora es?"
+                ],
+                answer: "¿Qué hora es?",
+                info: "Qué lleva tilde cuando se usa en una pregunta o exclamación."
+            },
+            {
+                tag: "TILDE EN HIATOS",
+                q: "¿Cuál palabra lleva tilde en la í?",
+                word: "PAÍS",
+                options: ["pais", "país", "países sin tilde"],
+                answer: "país",
+                info: "País lleva tilde en la í para marcar el hiato."
+            },
+            {
+                tag: "CAZATILDES",
+                q: "¿Cuál está escrita correctamente?",
+                word: "FÁCIL",
+                options: ["facil", "fácil", "facíl"],
+                answer: "fácil",
+                info: "La forma correcta es fácil, con tilde en la á."
+            },
+            {
+                tag: "TILDE DIACRÍTICA",
+                q: "Completa: «Quiero ___ de ese pastel».",
+                word: "MÁS / MAS",
+                options: ["mas", "más", "máS"],
+                answer: "más",
+                info: "Más lleva tilde cuando expresa cantidad. Mas, sin tilde, equivale a «pero» y es poco frecuente."
+            },
+            {
+                tag: "INTERROGATIVOS",
+                q: "Elige la oración correcta.",
+                word: "CÓMO",
+                options: [
+                    "¿Como te llamas?",
+                    "¿Cómo te llamas?",
+                    "Cómo te llamas."
+                ],
+                answer: "¿Cómo te llamas?",
+                info: "Cómo lleva tilde cuando aparece en una pregunta o exclamación."
+            },
+            {
+                tag: "CAZATILDES",
+                q: "¿Qué palabra está bien escrita?",
+                word: "TELÉFONO",
+                options: ["telefono", "teléfono", "telefóno"],
+                answer: "teléfono",
+                info: "Teléfono lleva tilde en la é."
+            },
+            {
+                tag: "TILDE DIACRÍTICA",
+                q: "¿Cuál oración usa «sí» para afirmar?",
+                word: "SÍ / SI",
+                options: [
+                    "Si, quiero ir.",
+                    "Sí, quiero ir.",
+                    "Sí quiero ir?"
+                ],
+                answer: "Sí, quiero ir.",
+                info: "Sí lleva tilde cuando expresa afirmación. Si, sin tilde, introduce una condición."
+            },
+            {
+                tag: "REGLAS DE ACENTUACIÓN",
+                q: "¿Cuál palabra necesita tilde para estar bien escrita?",
+                word: "LÁPIZ",
+                options: ["lapiz", "lápiz", "lapíz"],
+                answer: "lápiz",
+                info: "Lápiz se escribe con tilde en la á."
+            },
+            {
+                tag: "TILDE DIACRÍTICA",
+                q: "Completa: «Espero que me ___ una respuesta».",
+                word: "DÉ / DE",
+                options: ["de", "dé", "dè"],
+                answer: "dé",
+                info: "Dé lleva tilde cuando es una forma del verbo dar. De, sin tilde, es una preposición."
+            },
+            {
+                tag: "INTERROGATIVOS",
+                q: "¿Cuál opción está correctamente escrita?",
+                word: "DÓNDE",
+                options: [
+                    "¿Donde vives?",
+                    "¿Dónde vives?",
+                    "Dónde vives?"
+                ],
+                answer: "¿Dónde vives?",
+                info: "Dónde lleva tilde cuando se usa en una pregunta."
+            },
+            {
+                tag: "REGLAS DE ACENTUACIÓN",
+                q: "¿Cuál es la forma correcta?",
+                word: "CAFÉ",
+                options: ["cafe", "café", "cafè"],
+                answer: "café",
+                info: "Café lleva tilde en la é."
+            },
+            {
+                tag: "TILDE DIACRÍTICA",
+                q: "¿Cuál oración usa «té» para nombrar una bebida?",
+                word: "TÉ / TE",
+                options: [
+                    "Te invito un té.",
+                    "Té quiero contar algo.",
+                    "Te lleva tilde siempre."
+                ],
+                answer: "Te invito un té.",
+                info: "Té lleva tilde cuando nombra la bebida. Te, sin tilde, es un pronombre."
+            },
+            {
+                tag: "CAZATILDES",
+                q: "Elige la palabra correctamente escrita.",
+                word: "BRÚJULA",
+                options: ["brujula", "brújula", "brujúla"],
+                answer: "brújula",
+                info: "Brújula lleva tilde en la ú."
+            },
+            {
+                tag: "REPASO DE TILDES",
+                q: "¿Qué vocales pueden llevar tilde en español?",
+                word: "Á É Í Ó Ú",
+                options: [
+                    "Solo a y e",
+                    "Las cinco vocales",
+                    "Solo las vocales mayúsculas"
+                ],
+                answer: "Las cinco vocales",
+                info: "Las cinco vocales pueden llevar tilde: á, é, í, ó, ú. También se escribe tilde en mayúsculas cuando corresponde."
+            }
+        ];
+
+        const $ = id => document.getElementById(id);
+
+        let deck = [];
+        let current = 0;
+        let score = 0;
+        let combo = 0;
+        let time = 45;
+        let dieValue = 0;
+        let timerId = null;
+        let questionTimeout = null;
+        let rollTimeout = null;
+        let locked = true;
+        let playing = false;
+
+        function shuffle(array) {
+            const result = [...array];
+
+            for (let i = result.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [result[i], result[j]] = [result[j], result[i]];
+            }
+
+            return result;
+        }
+
+        function startGame() {
+            clearInterval(timerId);
+            clearTimeout(questionTimeout);
+            clearTimeout(rollTimeout);
+
+            deck = shuffle(questions);
+            current = 0;
+            score = 0;
+            combo = 0;
+            time = 45;
+            dieValue = 0;
+            locked = true;
+            playing = true;
+
+            $("score").textContent = score;
+            $("combo").textContent = combo;
+            $("timer").textContent = time;
+            $("bar").style.width = "100%";
+            $("timer").style.color = "";
+
+            $("gameScreen").classList.remove("hidden");
+            $("endScreen").classList.add("hidden");
+            $("startButton").classList.add("hidden");
+
+            $("rollButton").disabled = false;
+            $("die").className = "die face-1";
+            $("die").setAttribute("aria-label", "Dado sin lanzar");
+
+            showQuestion();
+
+            timerId = setInterval(() => {
+                if (!playing) return;
+
+                time--;
+                $("timer").textContent = time;
+                $("bar").style.width = (time / 45 * 100) + "%";
+
+                if (time <= 10) {
+                    $("timer").style.color = "#d4544d";
+                }
+
+                if (time <= 0) {
+                    endGame();
+                }
+            }, 1000);
+        }
+
+        function showQuestion() {
+            if (!playing) return;
+
+            if (current >= deck.length) {
+                deck = shuffle(questions);
+                current = 0;
+            }
+
+            locked = true;
+            dieValue = 0;
+
+            const q = deck[current];
+
+            $("tag").textContent = q.tag;
+            $("question").textContent = q.q;
+            $("word").textContent = q.word;
+
+            $("feedback").textContent =
+                "Lanza el dado para activar las respuestas.";
+
+            $("diceMessage").textContent =
+                "Pulsa LANZAR DADO. El resultado determinará tu bonificación.";
+
+            $("rollButton").disabled = false;
+            $("die").className = "die face-1";
+            $("die").setAttribute("aria-label", "Dado sin lanzar");
+
+            $("answers").replaceChildren();
+
+            shuffle(q.options).forEach(option => {
+                const button = document.createElement("button");
+
+                button.textContent = option;
+                button.disabled = true;
+                button.onclick = () => answer(option, button);
+
+                $("answers").appendChild(button);
+            });
+        }
+
+        function rollDie() {
+            if (!playing || !locked || dieValue !== 0) return;
+
+            $("rollButton").disabled = true;
+            $("die").classList.add("rolling");
+            $("diceMessage").textContent = "El dado está girando...";
+
+            const result = Math.floor(Math.random() * 6) + 1;
+
+            rollTimeout = setTimeout(() => {
+                if (!playing) return;
+
+                dieValue = result;
+
+                $("die").className = `die face-${result}`;
+                $("die").setAttribute("aria-label", `Dado: ${result}`);
+
+                const bonus = result * 25;
+
+                $("diceMessage").textContent =
+                    `Resultado: ${result}. Si aciertas, ganarás ${bonus} puntos extra.`;
+
+                $("feedback").textContent =
+                    "El sistema está activo. Selecciona tu respuesta.";
+
+                locked = false;
+
+                [...$("answers").children].forEach(button => {
+                    button.disabled = false;
+                });
+            }, 650);
+        }
+
+        function answer(option, button) {
+            if (locked || !playing || dieValue === 0) return;
+
+            locked = true;
+
+            const q = deck[current];
+            const buttons = [...$("answers").children];
+            const isCorrect = option === q.answer;
+
+            buttons.forEach(b => {
+                b.disabled = true;
+
+                if (b.textContent === q.answer) {
+                    b.classList.add("correct");
+                }
+            });
+
+            if (isCorrect) {
+                combo++;
+
+                const comboBonus = Math.min(combo - 1, 10) * 25;
+                const diceBonus = dieValue * 25;
+                const points = 100 + comboBonus + diceBonus;
+
+                score += points;
+
+                $("feedback").textContent =
+                    `¡CORRECTO! +${points} puntos. ${q.info}`;
+
+                $("diceMessage").textContent =
+                    `Bonificación obtenida: ${diceBonus} puntos.`;
+            } else {
+                combo = 0;
+                button.classList.add("wrong");
+
+                $("feedback").textContent =
+                    `RESPUESTA INCORRECTA. ${q.info}`;
+
+                $("diceMessage").textContent =
+                    "No hay bonificación en esta ronda. ¡Sigue intentando!";
+            }
+
+            $("score").textContent = score;
+            $("combo").textContent = combo;
+
+            $("rollButton").disabled = true;
+            current++;
+
+            questionTimeout = setTimeout(() => {
+                if (playing) showQuestion();
+            }, 1300);
+        }
+
+        function endGame() {
+            if (!playing) return;
+
+            playing = false;
+
+            clearInterval(timerId);
+            clearTimeout(questionTimeout);
+            clearTimeout(rollTimeout);
+
+            $("gameScreen").classList.add("hidden");
+            $("endScreen").classList.remove("hidden");
+
+            $("finalScore").textContent = `Puntuación final: ${score}`;
+
+            let rank;
+
+            if (score >= 1800) {
+                rank = "EXPERTO EN TILDES";
+            } else if (score >= 1100) {
+                rank = "ESPECIALISTA EN TILDES";
+            } else if (score >= 500) {
+                rank = "ESTUDIANTE AVANZADO";
+            } else {
+                rank = "EN FORMACIÓN";
+            }
+
+            $("rank").textContent = rank;
+        }
+    </script>
+</body>
+
+
+</html>
+
+
+
+
+git 
